@@ -304,7 +304,7 @@ export default function ProductsAdminPage() {
   return (
     <>
       <div >
-        <div className="fixed  bg-[#111827]" style={{width: "calc(100% - 20rem)"}}>
+        <div className="fixed bg-white dark:bg-[#111827]" style={{width: "calc(100% - 20rem)"}}>
 
           {/* Encabezado */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
