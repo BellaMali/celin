@@ -25,6 +25,7 @@ import {
   BarChart2,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import Logo from "@/public/logo.png"
 
 const navItems = [
   { name: "Dashboard", href: "/admin/dashboard", icon: BarChart },
@@ -63,7 +64,9 @@ export default function AdminNavbar() {
       {/* Botón de menú móvil - Ajustamos el z-index */}
       <div className="md:hidden fixed top-0 left-0 z-40 w-full app-header">
         <div className="flex items-center justify-between p-4">
-          <h1 className="text-xl font-bold text-sky-600 dark:text-sky-500">32 EXPRESS</h1>
+          <h1 className="text-xl font-bold text-sky-600 dark:text-sky-500">
+            <img src={Logo.src}/>
+            </h1>
           <div className="flex items-center space-x-2">
             <ThemeToggle />
             <button
@@ -121,7 +124,10 @@ export default function AdminNavbar() {
         <div className="flex-1 flex flex-col min-h-0 app-sidebar">
           <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
             <div className="flex items-center justify-between flex-shrink-0 px-4">
-              <h1 className="text-xl font-bold text-sky-600 dark:text-sky-500">32 EXPRESS</h1>
+              <h1 className="text-xl font-bold text-sky-600 dark:text-sky-500">
+                
+            <img src={Logo.src}/>
+            </h1>
               <ThemeToggle />
             </div>
             <nav className="mt-8 flex-1 px-2 space-y-1">

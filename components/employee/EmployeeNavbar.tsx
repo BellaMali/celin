@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 import type { AppDispatch, RootState } from "@/lib/redux/store"
 import { logout } from "@/lib/redux/slices/authSlice"
 import ThemeToggle from "@/components/ThemeToggle"
+import Logo from "@/public/logo.png"
 import { BarChart, Package, Menu, X, LogOut, UserIcon, PlusCircle } from "lucide-react"
 
 const navItems = [
@@ -34,7 +35,9 @@ export default function EmployeeNavbar() {
       {/* Botón de menú móvil - Ajustamos el z-index */}
       <div className="md:hidden fixed top-0 left-0 z-40 w-full app-header">
         <div className="flex items-center justify-between p-4">
-          <h1 className="text-xl font-bold text-sky-600 dark:text-sky-500">32 EXPRESS</h1>
+          <h1 className="text-xl font-bold text-sky-600 dark:text-sky-500">
+            <img src={Logo.src} />
+          </h1>
           <div className="flex items-center space-x-2">
             <ThemeToggle />
             <button
@@ -59,9 +62,8 @@ export default function EmployeeNavbar() {
                   <li key={item.name}>
                     <Link
                       href={item.href}
-                      className={`flex items-center p-3 rounded-md ${
-                        isActive ? "app-nav-link-active" : "app-nav-link-inactive"
-                      }`}
+                      className={`flex items-center p-3 rounded-md ${isActive ? "app-nav-link-active" : "app-nav-link-inactive"
+                        }`}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       <item.icon
@@ -92,7 +94,10 @@ export default function EmployeeNavbar() {
         <div className="flex-1 flex flex-col min-h-0 app-sidebar">
           <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
             <div className="flex items-center justify-between flex-shrink-0 px-4">
-              <h1 className="text-xl font-bold text-sky-600 dark:text-sky-500">32 EXPRESS</h1>
+              <h1 className="text-xl font-bold text-sky-600 dark:text-sky-500">
+                <img src={Logo.src} />
+
+              </h1>
               <ThemeToggle />
             </div>
             <nav className="mt-8 flex-1 px-2 space-y-1">

@@ -9,6 +9,7 @@ import { login, clearError, clearMessage } from "@/lib/redux/slices/authSlice"
 import { Eye, EyeOff, Lock, Mail } from "lucide-react"
 import ThemeToggle from "@/components/ThemeToggle"
 import { clientEnv } from "@/lib/env"
+import Logo from "@/public/logo.png"
 import Link from "next/link"
 
 export default function LoginPage() {
@@ -104,8 +105,7 @@ export default function LoginPage() {
 
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h1 className="mt-6 text-center text-4xl font-extrabold text-sky-600 dark:text-sky-500">32 EXPRESS</h1>
-          <h2 className="mt-2 text-center text-xl text-slate-600 dark:text-slate-400">Inicia sesión en tu cuenta</h2>
+          <img src={Logo.src}/>
         </div>
 
         <div className="mt-8 bg-white dark:bg-slate-900 py-8 px-4 shadow-lg sm:rounded-lg sm:px-10 border border-slate-200 dark:border-slate-800">
