@@ -35,7 +35,7 @@ const navItems = [
   { name: "Estadistica", href: "/admin/estadistica", icon: BarChart2 },
   { name: "Empleados", href: "/admin/employees", icon: Users },
   { name: "Negocios", href: "/admin/business", icon: Building2 },
-  // { name: "Actividad", href: "/admin/activity", icon: Activity },
+  { name: "Actividad", href: "/admin/actividad", icon: Activity },
   // { name: "Ventas", href: "/admin/sales", icon: ShoppingCart },
   // { name: "Flujo de Caja", href: "/admin/caja", icon: CreditCard },
 ]
@@ -65,8 +65,8 @@ export default function AdminNavbar() {
       <div className="md:hidden fixed top-0 left-0 z-40 w-full app-header">
         <div className="flex items-center justify-between p-4">
           <h1 className="text-xl font-bold text-sky-600 dark:text-sky-500">
-            <img src={Logo.src}/>
-            </h1>
+            {`CELIN ♥`}
+          </h1>
           <div className="flex items-center space-x-2">
             <ThemeToggle />
             <button
@@ -91,9 +91,8 @@ export default function AdminNavbar() {
                   <li key={item.name}>
                     <Link
                       href={item.href}
-                      className={`flex items-center p-3 rounded-md ${
-                        isActive ? "app-nav-link-active" : "app-nav-link-inactive"
-                      }`}
+                      className={`flex items-center p-3 rounded-md ${isActive ? "app-nav-link-active" : "app-nav-link-inactive"
+                        }`}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       <item.icon
@@ -125,9 +124,8 @@ export default function AdminNavbar() {
           <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
             <div className="flex items-center justify-between flex-shrink-0 px-4">
               <h1 className="text-xl font-bold text-sky-600 dark:text-sky-500">
-                
-            <img src={Logo.src}/>
-            </h1>
+                {`CELIN ♥`}
+              </h1>
               <ThemeToggle />
             </div>
             <nav className="mt-8 flex-1 px-2 space-y-1">

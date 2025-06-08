@@ -36,6 +36,10 @@ export default function ProductsAdminPage() {
   // ---------------------------
   const [products, setProducts] = useState<Product[]>([]);
   const [productsLoading, setProductsLoading] = useState(false);
+  const [isLowerStockModalOpen, setIsLowerStockModalOpen] = useState(false);
+  const [currentProductForLower, setCurrentProductForLower] = useState<Product | null>(null);
+  const [stockToLower, setStockToLower] = useState(0);
+  const [lowerReason, setLowerReason] = useState("");
 
   // Negocio seleccionado
   const [selectedBusinessId, setSelectedBusinessId] = useState<string>("");
@@ -71,6 +75,45 @@ export default function ProductsAdminPage() {
   // Ordenamiento
   const [sortField, setSortField] = useState<"stock" | null>("stock");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const openLowerStockModal = (product: Product) => {
+    setCurrentProductForLower(product);
+    setStockToLower(0);
+    setLowerReason("");
+    setIsLowerStockModalOpen(true);
+  };
+  const handleLowerStock = async () => {
+    if (!currentProductForLower || stockToLower <= 0) return;
+
+    const previousStock = currentProductForLower.stock;
+    const newStock = Math.max(0, previousStock - stockToLower);
+    const reason = lowerReason.trim() || "Sin motivo";
+
+    const message = `Producto "${currentProductForLower.name}" actualizado - Se bajó ${stockToLower} unidades (${reason}) y el stock actual es de ${newStock}, antes era de ${previousStock}`;
+
+    try {
+      // Actualiza el stock
+      await dispatch(
+        editProduct({
+          ...currentProductForLower,
+          stock: newStock,
+        })
+      ).unwrap();
+
+      // Guarda el mensaje en la tabla de logs
+      await supabase.from("stock_logs").insert([
+        {
+          message,
+        },
+      ]);
+
+      setIsLowerStockModalOpen(false);
+      setIsRefreshing(true);
+      await fetchProductsForBusiness(selectedBusinessId);
+      setIsRefreshing(false);
+    } catch (error) {
+      console.error("Error al bajar stock:", error);
+    }
+  };
 
   // ---------------------------
   // EFECTOS INICIALES
@@ -304,7 +347,7 @@ export default function ProductsAdminPage() {
   return (
     <>
       <div >
-        <div className="fixed bg-white dark:bg-[#111827]" style={{width: "calc(100% - 20rem)"}}>
+        <div className="fixed bg-white dark:bg-[#111827]" style={{ width: "calc(100% - 20rem)" }}>
 
           {/* Encabezado */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -496,6 +539,15 @@ export default function ProductsAdminPage() {
                                 className="btn btn-danger px-8"
                               >
                                 Eliminar
+                              </button>
+                              <button
+                                onClick={() => openLowerStockModal(product)}
+                                className="btn btn-warning px-8"
+                              >
+                                Bajar Stock
+                              </button>
+                              <button onClick={() => openAddStockModal(product)} className="btn btn-secondary px-8">
+                                Agregar Stock
                               </button>
                             </div>
                           </td>
@@ -747,6 +799,66 @@ export default function ProductsAdminPage() {
                     type="button"
                     onClick={handleAddStock}
                     disabled={stockToAdd <= 0}
+                    className="btn btn-primary"
+                  >
+                    Confirmar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {isLowerStockModalOpen && currentProductForLower && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-md w-full">
+              <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
+                <h2 className="text-xl font-semibold">Bajar Stock</h2>
+                <button
+                  onClick={() => setIsLowerStockModalOpen(false)}
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <div className="p-6 space-y-4">
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Producto</p>
+                  <p className="font-medium">{currentProductForLower.name}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Cantidad a Bajar
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={stockToLower}
+                    onChange={(e) => setStockToLower(Number(e.target.value) || 0)}
+                    className="input mt-1"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Motivo de la Baja
+                  </label>
+                  <textarea
+                    value={lowerReason}
+                    onChange={(e) => setLowerReason(e.target.value)}
+                    rows={3}
+                    className="input mt-1"
+                    placeholder="Ej: Producto vencido, roto, pérdida, etc."
+                  ></textarea>
+                </div>
+                <div className="pt-4 flex justify-end space-x-3">
+                  <button
+                    onClick={() => setIsLowerStockModalOpen(false)}
+                    className="btn btn-secondary"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={handleLowerStock}
+                    disabled={stockToLower <= 0}
                     className="btn btn-primary"
                   >
                     Confirmar
